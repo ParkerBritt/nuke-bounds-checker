@@ -40,30 +40,30 @@ def checkOutOfBounds(node : nuke.Node) -> bool:
 
 
 
-print("STATUS:", checkOutOfBounds(nuke.toNode("CheckerBoard1")))
-for curNode in allNodes:
-    print("\n----\n")
-    print("name:", curNode.name())
-    print(bbox.x(), bbox.y(), bbox.w(), bbox.h())
-    print(curNode.width(), curNode.height())
+print("responsible node:", findTargetNode(nuke.toNode("Merge5")).name())
+# for curNode in allNodes:
+#     print("\n----\n")
+#     print("name:", curNode.name())
+#     print(bbox.x(), bbox.y(), bbox.w(), bbox.h())
+#     print(curNode.width(), curNode.height())
 
-    isReformatTarget = checkOutOfBounds(curNode)
+#     isReformatTarget = checkOutOfBounds(curNode)
 
-    print("is reformat target:", isReformatTarget)
-    if(isReformatTarget):
-        # print(nuke.getColor(curNode.knob("tile_color").value()))
-        curNode.knob("tile_color").setValue(4278190335)
+#     print("is reformat target:", isReformatTarget)
+#     if(isReformatTarget):
+#         # print(nuke.getColor(curNode.knob("tile_color").value()))
+#         curNode.knob("tile_color").setValue(4278190335)
 
-        # TODO: filter only connected nodes
+#         # TODO: filter only connected nodes
 
-        curNode.setSelected(True)
-        print("target node:", findTargetNode(curNode))
-        reformatNode = nuke.createNode("Reformat")
-        # break
-        print("color to red")
-    else:
-        curNode.knob("tile_color").setValue(536805631)
-        print("color to green")
+#         curNode.setSelected(True)
+#         print("target node:", findTargetNode(curNode))
+#         reformatNode = nuke.createNode("Reformat")
+#         # break
+#         print("color to red")
+#     else:
+#         curNode.knob("tile_color").setValue(536805631)
+#         print("color to green")
 
 
-nuke.root().end()
+# nuke.root().end()
