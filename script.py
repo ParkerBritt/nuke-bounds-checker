@@ -8,7 +8,7 @@ allNodes = nuke.root().nodes()
 
 # TODO: Sort by heirarcy instead of height
 
-def findTargetNode(startNode : nuke.Node | None) -> nuke.Node:
+def findTargetNode(startNode : nuke.Node) -> nuke.Node:
     # TODO: handle nonetype inputs
 
     # find parent responsible for out of bounds box
