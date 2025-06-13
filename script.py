@@ -1,7 +1,7 @@
 # curNode = nuke.selectedNode()
 print("\n\n\n\n\n\n")
 
-LABEL_TEXT = "__bbox_fixer__"
+LABEL_TEXT = "boundsChecker__"
 
 def reformatUnbounded(traversalList : list[nuke.Node]) -> nuke.Node:
     """
@@ -29,7 +29,7 @@ def reformatUnbounded(traversalList : list[nuke.Node]) -> nuke.Node:
             reformatNode = nuke.createNode("Reformat")
             reformatNode.setSelected(False)
             reformatNode.knob("tile_color").setValue(4278190335)
-            reformatNode.knob("label").setValue(LABEL_TEXT)
+            reformatNode.knob("label").setValue(LABEL_TEXT+curNode.name())
             reformatNode.hideControlPanel()
 
             # for debug:
@@ -38,6 +38,7 @@ def reformatUnbounded(traversalList : list[nuke.Node]) -> nuke.Node:
             # for debug:
             # curNode.knob("tile_color").setValue(536805631)
 
+    originalSelectedNode.showControlPanel()
     originalSelectedNode.setSelected(True)
 
 def getUpperNodeTree(startNode: nuke.Node) -> list[nuke.Node]:
@@ -92,7 +93,7 @@ def removeReformats(traversalList : list[nuke.Node]) -> nuke.Node:
         if(node.Class()!="Reformat"):
             continue
 
-        if(node.knob("label").value() != LABEL_TEXT):
+        if(not node.knob("label").value().startswith(LABEL_TEXT)):
             continue
 
         nuke.delete(node)
@@ -114,7 +115,7 @@ def removeNodes():
     removeReformats(getUpperNodeTree(getExecutingNode()))
 
 def getMaxBorder():
-    return getExecutingNode().knob("border").value()
+    return getExecutingNode().knob("maxBoundDist").value()
 
 def debug():
     print('debug')
