@@ -1,11 +1,14 @@
+#!/usr/bin/env python
+
 import json, os
 
 buildText = ""
 
 with open("./template.nk") as nukeTemplate:
     with open("./script.py") as nukeScript:
-        scriptFormatedAdd = json.dumps(nukeScript.read()+"\naddNodes()")
-        scriptFormatedRemove = json.dumps(nukeScript.read()+"\nremoveNodes()")
+        nukeScriptTxt = nukeScript.read()
+        scriptFormatedAdd = json.dumps(nukeScriptTxt+"\naddNodes()")
+        scriptFormatedRemove = json.dumps(nukeScriptTxt+"\nremoveNodes()")
 
         buildText = nukeTemplate.read()
         buildText = buildText.replace("{SCRIPT_PLACEHOLDER_ADD}", scriptFormatedAdd)
