@@ -4,41 +4,16 @@ print("\n\n\n\n\n\n")
 
 # TODO: Sort by heirarcy instead of height
 
-def reformatUnbounded(startNode : nuke.Node) -> nuke.Node:
+def reformatUnbounded(traversalList : list[nuke.Node]) -> nuke.Node:
+    """
+    Identifies and reformats nodes with oversized bounding boxes
+    """
     nuke.root().begin()
     # TODO: handle nonetype inputs
 
-    # find parent responsible for out of bounds box
-    foundTarget = False
-
-    vistedNodes = list()
-    traversalBuffer = list()
-    traversalBuffer.append(startNode)
-
-    problemNodes = list()
-
-    while len(traversalBuffer) != 0:
-        print("len:", len(traversalBuffer))
-        curNode = traversalBuffer.pop()
-        print("current node", curNode.name())
-        print("inputs:", curNode.inputs())
-        for i in range(curNode.inputs()):
-            print("i:", i)
-            inputNode = curNode.input(i)
-
-            if(inputNode is not None):
-                print("adding:", inputNode.name())
-                traversalBuffer.append(inputNode)
-                vistedNodes.append(inputNode)
-            else:
-                print("skipping")
-
-    vistedNodes.reverse()
-    print(vistedNodes)
-
     nukescripts.clear_selection_recursive()
     
-    for curNode in vistedNodes:
+    for curNode in traversalList:
 
         print("current node:", curNode.name())
         curNode.redraw()
@@ -60,6 +35,34 @@ def reformatUnbounded(startNode : nuke.Node) -> nuke.Node:
             # for debug:
             # curNode.knob("tile_color").setValue(536805631)
 
+def getUpperNodeTree(startNode: nuke.Node) -> list[nuke.Node]:
+    """
+    Gets all nodes connected to the input of the startNode
+    """
+    visitedNodes = list()
+    traversalBuffer = list()
+    traversalBuffer.append(startNode)
+
+    while len(traversalBuffer) != 0:
+        print("len:", len(traversalBuffer))
+        curNode = traversalBuffer.pop()
+        print("current node", curNode.name())
+        print("inputs:", curNode.inputs())
+        for i in range(curNode.inputs()):
+            print("i:", i)
+            inputNode = curNode.input(i)
+
+            if(inputNode is not None):
+                print("adding:", inputNode.name())
+                traversalBuffer.append(inputNode)
+                visitedNodes.append(inputNode)
+            else:
+                print("skipping")
+
+    visitedNodes.reverse()
+    return visitedNodes
+
+
 
 def checkOutOfBounds(node : nuke.Node) -> bool:
     maxBoundDist = 200
@@ -76,6 +79,7 @@ def checkOutOfBounds(node : nuke.Node) -> bool:
 
 
 def getExecutingNode() -> nuke.Node:
-    pass
+    return nuke.thisNode()
 
-reformatUnbounded(nuke.toNode("Fixer"))
+print("thisNode:", getExecutingNode().name())
+reformatUnbounded(getUpperNodeTree(getExecutingNode()))
