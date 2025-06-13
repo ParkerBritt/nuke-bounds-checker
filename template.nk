@@ -12,6 +12,8 @@ Group {
  addUserKnob {20 User}
  addUserKnob {22 addnodes l "Add Nodes" t "Adds reformat nodes when the bounding box exeeds 200 pixels from the image." T {SCRIPT_PLACEHOLDER_ADD} +STARTLINE}
  addUserKnob {22 removenodes l "Remove Nodes" t "Removes reformat nodes placed from this node." T {SCRIPT_PLACEHOLDER_REMOVE} +STARTLINE}
+ addUserKnob {3 maxBoundDist l "Max Bound Dist"}
+ maxBoundDist 200
 }
  Input {
   inputs 0

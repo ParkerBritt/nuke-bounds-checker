@@ -38,7 +38,7 @@ def reformatUnbounded(traversalList : list[nuke.Node]) -> nuke.Node:
             # for debug:
             # curNode.knob("tile_color").setValue(536805631)
 
-    originalSelectedNode.showControlPanel()
+    # originalSelectedNode.showControlPanel()
     originalSelectedNode.setSelected(True)
 
 def getUpperNodeTree(startNode: nuke.Node) -> list[nuke.Node]:
