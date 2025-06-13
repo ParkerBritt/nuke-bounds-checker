@@ -88,3 +88,19 @@ def removeReformats(traversalList : list[nuke.Node]) -> nuke.Node:
             continue
 
         nuke.delete(node)
+
+
+def addNodes():
+    """
+    High level function to add reformat nodes
+    """
+    executingNode = getExecutingNode()
+
+    removeReformats(getUpperNodeTree(executingNode))
+    reformatUnbounded(getUpperNodeTree(executingNode))
+
+def removeNodes():
+    """
+    High level function to remove reformat nodes
+    """
+    removeReformats(getUpperNodeTree(getExecutingNode()))
