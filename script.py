@@ -53,7 +53,8 @@ def getUpperNodeTree(startNode: nuke.Node) -> list[nuke.Node]:
 
             if(inputNode is not None):
                 traversalBuffer.append(inputNode)
-                visitedNodes.append(inputNode)
+                if(inputNode not in visitedNodes):
+                    visitedNodes.append(inputNode)
 
     visitedNodes.reverse()
     return visitedNodes
@@ -104,3 +105,6 @@ def removeNodes():
     High level function to remove reformat nodes
     """
     removeReformats(getUpperNodeTree(getExecutingNode()))
+
+def debug():
+    addNodes()
