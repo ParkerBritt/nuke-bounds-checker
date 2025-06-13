@@ -1,14 +1,11 @@
 # curNode = nuke.selectedNode()
 print("\n\n\n\n\n\n")
 
-nuke.root().begin()
-allNodes = nuke.root().nodes()
-# TODO: check for no nodes
-
 
 # TODO: Sort by heirarcy instead of height
 
-def findTargetNode(startNode : nuke.Node) -> nuke.Node:
+def reformatUnbounded(startNode : nuke.Node) -> nuke.Node:
+    nuke.root().begin()
     # TODO: handle nonetype inputs
 
     # find parent responsible for out of bounds box
@@ -36,7 +33,6 @@ def findTargetNode(startNode : nuke.Node) -> nuke.Node:
             else:
                 print("skipping")
 
-    print("done")
     vistedNodes.reverse()
     print(vistedNodes)
 
@@ -51,26 +47,18 @@ def findTargetNode(startNode : nuke.Node) -> nuke.Node:
 
 
         if(isReformatTarget):
-            # print(nuke.getColor(curNode.knob("tile_color").value()))
-            curNode.knob("tile_color").setValue(4278190335)
-
-            # TODO: filter only connected nodes
-            print("selected nodes:", nuke.selectedNodes())
 
             curNode.setSelected(True)
             reformatNode = nuke.createNode("Reformat")
             reformatNode.setSelected(False)
-            # curNode.setSelected(False)
-            # break
-            print("color to red")
-        else:
-            curNode.knob("tile_color").setValue(536805631)
+            reformatNode.knob("tile_color").setValue(4278190335)
+            reformatNode.knob("label").setValue("bbox fixer")
 
-        # if not out of bounds then the previous node is the top level target
-        # if(not checkOutOfBounds(curNode)):
-        #     problemNodes.append(prevNode)
-
-
+            # for debug:
+            # curNode.knob("tile_color").setValue(4278190335)
+        # else:
+            # for debug:
+            # curNode.knob("tile_color").setValue(536805631)
 
 
 def checkOutOfBounds(node : nuke.Node) -> bool:
@@ -87,32 +75,7 @@ def checkOutOfBounds(node : nuke.Node) -> bool:
     return status
 
 
+def getExecutingNode() -> nuke.Node:
+    pass
 
-
-print("responsible node:", findTargetNode(nuke.toNode("Fixer")))
-# for curNode in allNodes:
-#     print("\n----\n")
-#     print("name:", curNode.name())
-#     print(bbox.x(), bbox.y(), bbox.w(), bbox.h())
-#     print(curNode.width(), curNode.height())
-
-#     isReformatTarget = checkOutOfBounds(curNode)
-
-#     print("is reformat target:", isReformatTarget)
-#     if(isReformatTarget):
-#         # print(nuke.getColor(curNode.knob("tile_color").value()))
-#         curNode.knob("tile_color").setValue(4278190335)
-
-#         # TODO: filter only connected nodes
-
-#         curNode.setSelected(True)
-#         print("target node:", findTargetNode(curNode))
-#         # reformatNode = nuke.createNode("Reformat")
-#         # break
-#         print("color to red")
-#     else:
-#         curNode.knob("tile_color").setValue(536805631)
-#         print("color to green")
-
-
-# nuke.root().end()
+reformatUnbounded(nuke.toNode("Fixer"))
