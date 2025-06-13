@@ -11,12 +11,15 @@ def reformatUnbounded(traversalList : list[nuke.Node]) -> nuke.Node:
     nuke.root().begin()
 
     nukescripts.clear_selection_recursive()
+
+    maxBorder = getMaxBorder()
+    print("max Border:", maxBorder)
     
     for curNode in traversalList:
 
         print("current node:", curNode.name())
         # curNode.redraw()
-        isReformatTarget = checkOutOfBounds(curNode)
+        isReformatTarget = checkOutOfBounds(curNode, maxBorder)
 
 
 
@@ -61,8 +64,9 @@ def getUpperNodeTree(startNode: nuke.Node) -> list[nuke.Node]:
 
 
 
-def checkOutOfBounds(node : nuke.Node) -> bool:
-    maxBoundDist = 200
+def checkOutOfBounds(node : nuke.Node, maxBorder: int = 200) -> bool:
+    maxBoundDist = maxBorder
+    print("maxBoundDist:", maxBoundDist)
 
     bbox = node.bbox()
     xMin = bbox.x()<-maxBoundDist 
@@ -71,12 +75,15 @@ def checkOutOfBounds(node : nuke.Node) -> bool:
     xMax = (bbox.x()+bbox.w())>(node.width()+maxBoundDist)
     yMax = (bbox.y()+bbox.h())>(node.height()+maxBoundDist)
     status = xMin or yMin or xMax or yMax 
-    print(bbox.x())
     return status
 
 
 def getExecutingNode() -> nuke.Node:
-    return nuke.thisNode()
+    # static variable since thisNode gets changed later
+    if not hasattr(getExecutingNode, "execNode"):
+        getExecutingNode.execNode = nuke.thisNode()
+    print("THIS NODE:", getExecutingNode.execNode.name())
+    return getExecutingNode.execNode
 
 def removeReformats(traversalList : list[nuke.Node]) -> nuke.Node:
     print("removing")
@@ -106,5 +113,9 @@ def removeNodes():
     """
     removeReformats(getUpperNodeTree(getExecutingNode()))
 
+def getMaxBorder():
+    return getExecutingNode().knob("border").value()
+
 def debug():
-    addNodes()
+    print('debug')
+    print(getMaxBorder())
